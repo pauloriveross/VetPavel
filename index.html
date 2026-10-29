@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F4F6F6">
+<title>CardioVet Móvil | Sociedad de Cardiología Veterinaria e Interconsultas Clínicas</title>
+<meta name="description" content="Ecocardiografía Doppler, electrocardiografía e interconsultas de cardiología veterinaria directamente en tu clínica.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0F1B24;
+  --paper: #F4F6F6;
+  --white: #FFFFFF;
+  --line: #D6DDE0;
+  --muted: #52606A;
+  --red: #C4342B;
+  --red-deep: #A62A22;
+  --ok: #2E7D5B;
+  --blue: #2B5E8C;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wrap: 1200px;
+  --pad: clamp(20px, 4vw, 40px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  padding-bottom: 84px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1.0625rem/1.65 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+@media (min-width: 768px) { body { padding-bottom: 0; } }
+
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3, p, ul, figure { margin: 0; }
+
+.wrap { width: min(100% - 2 * var(--pad), var(--wrap)); margin-inline: auto; }
+
+:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+.skip {
+  position: absolute; left: 16px; top: -60px; z-index: 100;
+  background: var(--ink); color: #fff; padding: 12px 16px; border-radius: 8px; text-decoration: none;
+}
+.skip:focus { top: 12px; }
+
+/* ---------- Botones y enlaces ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 22px;
+  border: 1px solid transparent; border-radius: 8px;
+  font: 600 .9375rem/1.2 var(--sans); text-decoration: none; cursor: pointer;
+  transition: background-color .15s, border-color .15s, color .15s;
+}
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn-primary { background: var(--red); color: #fff; }
+.btn-primary:hover { background: var(--red-deep); }
+.btn-ghost { border-color: var(--ink); color: var(--ink); background: transparent; }
+.btn-ghost:hover { background: var(--ink); color: #fff; }
+.btn-sm { min-height: 40px; padding: 0 16px; font-size: .875rem; }
+.btn-block { width: 100%; }
+
+.link {
+  font-weight: 600; font-size: .9375rem;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px;
+}
+.link:hover { color: var(--red); }
+
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); flex: none; }
+.dot-blue { background: var(--blue); }
+
+/* ---------- Cabecera ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(244, 246, 246, .94);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 68px; }
+
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 600 1.375rem/1 var(--serif); letter-spacing: -.01em; }
+.brand svg { width: 34px; height: 22px; color: var(--red); }
+.brand span { font-weight: 400; color: var(--muted); }
+
+.nav { display: none; gap: 28px; font-size: .9375rem; font-weight: 500; }
+.nav a { text-decoration: none; color: var(--muted); }
+.nav a:hover { color: var(--ink); }
+
+.header-actions { display: none; align-items: center; gap: 20px; }
+.on-call { display: none; align-items: center; gap: 8px; font-size: .875rem; color: var(--muted); }
+
+@media (min-width: 768px) { .header-actions { display: flex; } }
+@media (min-width: 900px) { .nav { display: flex; } }
+@media (min-width: 1000px) { .on-call { display: inline-flex; } }
+
+/* ---------- Hero ---------- */
+.hero { padding-top: clamp(40px, 6vw, 80px); }
+.hero-grid { display: grid; gap: 40px; }
+.hero h1 {
+  font: 500 clamp(2.5rem, 5.6vw, 4.4rem)/1.03 var(--serif);
+  letter-spacing: -.025em; text-wrap: balance; margin-bottom: 24px;
+}
+.lead { font-size: 1.1875rem; line-height: 1.6; color: var(--muted); max-width: 33em; margin-bottom: 32px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-note { margin-top: 28px; font-size: .9375rem; color: var(--muted); max-width: 36em; }
+.hero-media { text-align: center; display: flex; justify-content: center; }
+.hero-media img { width: 100%; height: auto; object-fit: contain; border-radius: 4px; background: #DFE5E7; margin: 0 auto; }
+
+
+@media (min-width: 900px) {
+  .hero-grid { grid-template-columns: repeat(12, 1fr); gap: 0 24px; align-items: end; }
+  .hero-copy { grid-column: 1 / 8; }
+  .hero-media { grid-column: 8 / 13; text-align: center; display: flex; justify-content: center; }
+  .hero-media img { height: auto; object-fit: contain; margin: 0 auto; }
+}
+
+/* Trazo de ECG: el único movimiento de la página */
+.ecg { margin-top: clamp(40px, 6vw, 72px); color: var(--red); }
+.ecg svg { display: block; width: 100%; height: 72px; }
+.ecg path {
+  fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 0;
+  animation: trace 2.8s cubic-bezier(.4, .1, .2, 1) .2s both;
+}
+@keyframes trace { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .ecg path { animation: none; } }
+
+.readout { display: grid; border-bottom: 1px solid var(--line); }
+.readout > div { padding: 22px 0; border-top: 1px solid var(--line); display: grid; gap: 4px; }
+.readout strong { font: 500 2rem/1.1 var(--serif); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.readout span { font-size: .9375rem; color: var(--muted); }
+.readout > div:first-child { border-top: 0; }
+@media (min-width: 768px) {
+  .readout { grid-template-columns: repeat(3, 1fr); border-bottom: 0; }
+  .readout > div { border-top: 0; padding: 28px 28px 28px 0; }
+  .readout > div + div { border-left: 1px solid var(--line); padding-left: 28px; }
+}
+
+/* ---------- Estructura de secciones ---------- */
+.sec { padding-block: clamp(72px, 9vw, 128px); }
+h2 { font: 500 clamp(2rem, 3.6vw, 2.875rem)/1.08 var(--serif); letter-spacing: -.02em; text-wrap: balance; }
+
+.sec-head { display: grid; gap: 16px; margin-bottom: clamp(32px, 5vw, 56px); }
+.sec-head p { color: var(--muted); max-width: 34em; }
+@media (min-width: 900px) {
+  .sec-head { grid-template-columns: repeat(12, 1fr); gap: 24px; align-items: end; }
+  .sec-head h2 { grid-column: 1 / 7; }
+  .sec-head p { grid-column: 8 / 13; }
+}
+
+/* ---------- Servicios ---------- */
+.services-grid { display: grid; gap: 48px; }
+.services-intro p { color: var(--muted); margin-top: 20px; max-width: 26em; }
+.studies-title { margin-top: 36px; font: 600 .9375rem/1.4 var(--sans); color: var(--muted); }
+.studies { list-style: none; padding: 0; margin-top: 8px; border-top: 1px solid var(--line); }
+.studies li { padding: 12px 0; border-bottom: 1px solid var(--line); font-weight: 500; }
+
+.service { padding: 28px 0; border-top: 1px solid var(--line); }
+.service:last-child { border-bottom: 1px solid var(--line); }
+.service h3 { font: 500 1.625rem/1.2 var(--serif); letter-spacing: -.01em; margin-bottom: 8px; }
+.service p { color: var(--muted); max-width: 36em; }
+
+@media (min-width: 900px) {
+  .services-grid { grid-template-columns: repeat(12, 1fr); gap: 24px; }
+  .services-intro { grid-column: 1 / 6; }
+  .services-list { grid-column: 7 / 13; }
+}
+
+/* ---------- Filosofía (sección oscura) ---------- */
+.sec-dark { background: var(--ink); color: #EAF0F2; }
+.sec-dark :focus-visible { outline-color: #F2877E; }
+.philo-grid { display: grid; gap: 48px; }
+.philo h2 { font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.02; font-weight: 400; letter-spacing: -.025em; }
+.philo-text { color: #B4C1C7; font-size: 1.125rem; max-width: 34em; }
+.philo-points { display: grid; gap: 0; margin-top: 32px; }
+.philo-point { padding: 24px 0; border-top: 1px solid rgba(255, 255, 255, .18); }
+.philo-point h3 { font: 500 1.375rem/1.25 var(--serif); margin-bottom: 8px; color: #fff; }
+.philo-point p { color: #B4C1C7; max-width: 32em; }
+.protocol {
+  display: flex; flex-direction: column; gap: 16px;
+  margin-top: clamp(40px, 6vw, 72px); padding-top: 28px; border-top: 1px solid rgba(255, 255, 255, .18);
+}
+.protocol strong { display: block; font: 500 1.25rem/1.3 var(--serif); color: #fff; }
+.protocol p { color: #B4C1C7; font-size: .9375rem; margin-top: 4px; }
+.protocol .link { color: #F2877E; }
+.protocol .link:hover { color: #fff; }
+
+@media (min-width: 900px) {
+  .philo-grid { grid-template-columns: repeat(12, 1fr); gap: 24px; }
+  .philo h2 { grid-column: 1 / 7; }
+  .philo-body { grid-column: 8 / 13; }
+  .protocol { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+
+/* ---------- Equipo ---------- */
+.team-row { display: grid; gap: 20px; padding: 32px 0; border-top: 1px solid var(--line); align-items: start; }
+.team-row:last-child { border-bottom: 1px solid var(--line); }
+.team-photo img { width: 96px; height: 96px; object-fit: cover; border-radius: 4px; background: #DFE5E7; }
+.team-id h3 { font: 500 1.75rem/1.15 var(--serif); letter-spacing: -.01em; }
+.specialty { margin-top: 6px; color: var(--red); font-weight: 600; font-size: .9375rem; line-height: 1.4; }
+.reg { margin-top: 12px; color: var(--muted); font-size: .875rem; }
+.team-bio p { color: var(--muted); max-width: 34em; }
+.team-bio .areas { margin-top: 12px; color: var(--ink); font-size: .9375rem; font-weight: 500; }
+
+@media (min-width: 900px) {
+  .team-row { grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 36px 0; }
+  .team-photo { grid-column: 1 / 3; }
+  .team-photo img { width: 128px; height: 128px; }
+  .team-id { grid-column: 3 / 7; }
+  .team-bio { grid-column: 7 / 11; }
+  .team-link { grid-column: 11 / 13; justify-self: end; }
+}
+
+/* ---------- Casos ---------- */
+.cases { display: grid; gap: 44px 24px; grid-template-columns: 1fr; }
+.case img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; background: #DFE5E7; }
+.case figcaption { padding-top: 18px; }
+.case h3 { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font: 500 1.5rem/1.2 var(--serif); }
+.case h3 span { font: 400 .9375rem/1 var(--sans); color: var(--muted); }
+.dx { margin: 6px 0 12px; font-weight: 600; font-size: .9375rem; line-height: 1.4; }
+.case-text { color: var(--muted); font-size: .9375rem; line-height: 1.6; }
+.case-status { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: .875rem; font-weight: 600; }
+
+@media (min-width: 640px) { .cases { grid-template-columns: repeat(2, 1fr); } .case img { aspect-ratio: 1 / 1; } }
+@media (min-width: 1000px) { .cases { grid-template-columns: repeat(4, 1fr); } .case img { aspect-ratio: 4 / 5; } }
+
+/* ---------- Contacto ---------- */
+.sec-contact { background: #E9EEEF; }
+.contact-grid { display: grid; gap: 48px; }
+.contact-info p { color: var(--muted); margin-top: 20px; max-width: 28em; }
+.contact-list { list-style: none; padding: 0; margin-top: 36px; }
+.contact-list li { padding: 18px 0; border-top: 1px solid #C5CED2; }
+.contact-list li:last-child { border-bottom: 1px solid #C5CED2; }
+.contact-list small { display: block; font-size: .875rem; color: var(--muted); }
+.contact-list a.value { display: inline-block; margin: 2px 0; font: 600 1.1875rem/1.4 var(--sans); text-decoration: none; overflow-wrap: anywhere; }
+.contact-list a.value:hover { color: var(--red); text-decoration: underline; text-underline-offset: 4px; }
+
+.form-panel { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: clamp(24px, 4vw, 40px); }
+.form-panel h3 { font: 500 1.625rem/1.2 var(--serif); letter-spacing: -.01em; margin-bottom: 28px; }
+
+.field { display: grid; gap: 8px; margin-bottom: 20px; }
+.field label, legend { font-weight: 600; font-size: .9375rem; }
+.field input, .field select, .field textarea {
+  width: 100%; min-height: 48px; padding: 0 14px;
+  font: inherit; font-size: 1rem; color: var(--ink);
+  background: #fff; border: 1px solid #A9B5BB; border-radius: 8px;
+}
+.field textarea { padding: 12px 14px; min-height: 116px; resize: vertical; line-height: 1.5; }
+.field input::placeholder, .field textarea::placeholder { color: #6B7882; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--red); outline-offset: 0; border-color: var(--red); }
+.row { display: grid; gap: 0 16px; }
+@media (min-width: 640px) { .row { grid-template-columns: 1fr 1fr; } }
+
+fieldset { border: 0; padding: 0; margin: 0 0 20px; min-width: 0; }
+legend { padding: 0; margin-bottom: 8px; }
+.choices { display: grid; gap: 8px; }
+.choice { position: relative; display: block; }
+.choice input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.choice span { display: block; height: 100%; padding: 12px 14px; border: 1px solid #A9B5BB; border-radius: 8px; background: #fff; transition: border-color .15s, box-shadow .15s, background-color .15s; }
+.choice b { display: block; font-size: .9375rem; font-weight: 600; }
+.choice small { display: block; margin-top: 2px; font-size: .8125rem; color: var(--muted); line-height: 1.4; }
+.choice input:checked + span { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); background: var(--paper); }
+.choice.is-urgent input:checked + span { border-color: var(--red); box-shadow: inset 0 0 0 1px var(--red); background: #FBEFEE; }
+.choice input:focus-visible + span { outline: 2px solid var(--red); outline-offset: 3px; }
+@media (min-width: 640px) { .choices { grid-template-columns: repeat(3, 1fr); } }
+
+.hint { margin-top: 10px; font-size: .9375rem; color: var(--muted); }
+.hint a { font-weight: 600; color: var(--red); }
+.form-note { margin-top: 16px; font-size: .875rem; color: var(--muted); text-align: center; }
+
+.sent { display: grid; gap: 12px; justify-items: start; }
+.sent h3 { margin-bottom: 0; }
+.sent p { color: var(--muted); }
+.sent .btn { margin-top: 12px; }
+
+/* ---------- Pie ---------- */
+.site-footer { padding-block: 48px 40px; border-top: 1px solid var(--line); }
+.footer-top { display: flex; flex-direction: column; gap: 28px; }
+.footer-brand p { margin-top: 10px; color: var(--muted); font-size: .9375rem; max-width: 30em; }
+.footer-links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 28px; font-size: .9375rem; }
+.footer-links a { text-decoration: none; color: var(--muted); }
+.footer-links a:hover { color: var(--red); }
+.footer-bottom { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; font-size: .875rem; color: var(--muted); }
+@media (min-width: 900px) {
+  .footer-top { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+  .footer-bottom { flex-direction: row; justify-content: space-between; }
+}
+
+/* ---------- Barra inferior móvil ---------- */
+.dock {
+  position: fixed; inset: auto 0 0 0; z-index: 50; display: flex; gap: 10px;
+  padding: 10px var(--pad) calc(10px + env(safe-area-inset-bottom));
+  background: rgba(244, 246, 246, .96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+}
+.dock .btn { padding: 0 16px; font-size: .875rem; }
+.dock .btn-primary { flex: 1; }
+@media (min-width: 768px) { .dock { display: none; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#contacto">Ir al formulario de interconsulta</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="CardioVet Móvil, inicio">
+      <svg viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M1 12h8l3-3 3 11 4-18 3 10h11"/></svg>
+      PavelVet 
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#servicios">Servicios</a>
+      <a href="#equipo">Equipo</a>
+      <a href="#casos">Casos clínicos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-primary btn-sm" href="#contacto">Solicitar interconsulta</a>
+    </div>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>Cardiología veterinaria especializada, directo en tu clínica</h1>
+        <p class="lead">Ecocardiografía Doppler, electrocardiografía e interconsultas diagnósticas en tu centro, con rigor científico y trato cercano para cada paciente.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contacto">Solicitar interconsulta</a>
+          <a class="btn btn-ghost" href="tel:+34600123456">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+            Llamar a guardia
+          </a>
+        </div>
+        <p class="hero-note">Interconsultas colegiadas y avaladas para clínicas veterinarias de toda la región.</p>
+      </div>
+      <div class="hero-media">
+        <img alt="Especialista veterinaria realizando un ecocardiograma a un paciente canino" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcFqf0O-fAw90Tm6inB6LfZcywdgglqt-I_FM8Lg64sGW2DnF6q6s6LbpjC7BwwXDhWrVfqzMepBTMhL3ETEKlXzOE71kJcjO3qPWmpGihYlL27_zzwB2Jl3-0uB-dJMKI0HYEMAM4LBEFdRYm18aO5uLo_mbHzoy61yka_MzypYZ7EIWTuchQV9ldC3cu76Z9YHL4HoWhhhxyCXNSoQMCvidQsiMW3CkhP67n_pqUMh4opNAEwE3n4IsOd_6_PbBAeiO0JkI5Q7c" width="800" height="1000">
+      </div>
+    </div>
+
+    <div class="ecg" aria-hidden="true">
+      <svg id="ecg" preserveAspectRatio="xMinYMid meet" viewBox="0 0 1600 100"><path pathLength="1" d=""/></svg>
+    </div>
+
+    <div class="wrap readout">
+      <div><strong>+2.400</strong><span>ecocardiogramas realizados</span></div>
+      <div><strong>&lt; 24 h</strong><span>de respuesta a cada interconsulta</span></div>
+      <div><strong>In situ</strong><span>informe inmediato al terminar el estudio</span></div>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section class="sec" id="servicios">
+    <div class="wrap services-grid">
+      <div class="services-intro">
+        <h2>Qué hacemos en tu clínica</h2>
+        <p>Llevamos el equipo al box de consulta que el paciente ya conoce, y trabajamos junto al veterinario que lo sigue.</p>
+        <h3 class="studies-title">Estudios disponibles</h3>
+        <ul class="studies">
+          <li>Ecocardiograma Doppler color</li>
+          <li>Electrocardiograma</li>
+          <li>Holter de 24 horas</li>
+        </ul>
+      </div>
+      <div class="services-list">
+        <article class="service">
+          <h3>Atención en tu centro</h3>
+          <p>Equipamiento de alta gama que viaja a las clínicas asociadas. El paciente no se traslada, y el estrés se evita.</p>
+        </article>
+        <article class="service">
+          <h3>Informe completo</h3>
+          <p>Ecocardiografía diagnóstica con reporte hemodinámico y pauta terapéutica digital, entregados en mano.</p>
+        </article>
+        <article class="service">
+          <h3>Seguimiento conjunto</h3>
+          <p>Acompañamiento clínico directo y controles compartidos con el médico veterinario de cabecera.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filosofía -->
+  <section class="sec sec-dark philo" id="nosotros">
+    <div class="wrap">
+      <div class="philo-grid">
+        <h2>Nuestra vocación: cuidar cada latido</h2>
+        <div class="philo-body">
+          <p class="philo-text">Un paciente con compromiso cardiovascular sufre un estrés desmedido durante los traslados de urgencia. Por eso cambiamos el modelo de interconsulta veterinaria: el especialista va hasta el paciente.</p>
+          <div class="philo-points">
+            <div class="philo-point">
+              <h3>Seguridad del paciente cardiópata</h3>
+              <p>Evitamos viajes innecesarios y sedaciones de riesgo. Llevamos transductores pediátricos y vasculares al box que el paciente ya conoce.</p>
+            </div>
+            <div class="philo-point">
+              <h3>Alianza con la clínica remitente</h3>
+              <p>No competimos con tu centro: somos una extensión de tu equipo y cuidamos el vínculo entre el tutor, el médico tratante y nosotros.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="protocol">
+        <div>
+          <strong>Protocolo de derivación interclínica</strong>
+          <p>Cumplimos el código deontológico veterinario y la custodia de expedientes.</p>
+        </div>
+        <a class="link" href="#contacto">Pedir el protocolo en PDF</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Equipo -->
+  <section class="sec" id="equipo">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Equipo especialista</h2>
+        <p>Cardiólogos dedicados a la exploración funcional y a la ecografía de alta precisión.</p>
+      </div>
+
+      <article class="team-row">
+        <div class="team-photo">
+          <img alt="Dra. Valentina Morales" width="256" height="256" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsttU118kM9dN6-9BWNO5g_e8D-viKShdRpscQfSRMteZXpVq91iQEPeWJMFOrTHq34A03qVdlIRAL26zYnfDeHnLGYTTWwAxPtVJxwfGQivCi3_GFjhJdxGms5ctyzyGFu1GIyufIzzAD4zh10Kg0K13Iu_LqRulNVodo2b3ffHiwrT_85WwW0v_c7mYFtyfeD6zVyII7jlkZ7-dEjBlyTgny7wlgOgKwDq4a1yqWDfKqeHQru3fE745VvfPvAZvnlf1ZlSlJH7g">
+        </div>
+        <div class="team-id">
+          <h3>Dra. Valentina Morales</h3>
+          <p class="specialty">Ecocardiografía Doppler y cardiopatías congénitas</p>
+          <p class="reg">Col. Vet. 4.892</p>
+        </div>
+        <div class="team-bio">
+          <p>Más de 12 años dedicada al diagnóstico no invasivo, con foco en estenosis aórtica y ductus arterioso permeable en perros jóvenes.</p>
+          <p class="areas">Doppler espectral, tetralogía</p>
+        </div>
+        <a class="link team-link" href="#contacto">Ver disponibilidad</a>
+      </article>
+
+      <article class="team-row">
+        <div class="team-photo">
+          <img alt="Dr. Martín Saavedra" width="256" height="256" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0CuxQuF9ucj6_6ASrGx1V0zWrJkt64Z_Q5r1UKtYq3dCZB1Vz_knfWs7C-moc3Rh9QtVaCRqUuPDt5ASYpm4E4WKTC6RO0ah4d18V4yByI85FTzE3qIAdKtYfEsRTZdmo-20IglNloXuQmVTpTWQLQY0fMGTX4wi7sErPZWB3lZUpl0FXXoXbnv3WCtfssMp_1kry7cwT6RSyaSj7wV65y2p-lvPx2y4Lf5qjvYq2sN4IVGLbA0yku98bMXZa4bVj0ZlQbGmdDOg">
+        </div>
+        <div class="team-id">
+          <h3>Dr. Martín Saavedra</h3>
+          <p class="specialty">Arritmias e hipertensión pulmonar</p>
+          <p class="reg">Col. Vet. 5.210</p>
+        </div>
+        <div class="team-bio">
+          <p>Pionero en monitorización telemétrica con Holter de 24 h e investigador de la cardiopatía hipertrófica en felinos braquicéfalos.</p>
+          <p class="areas">Holter 24 h, cardiología felina</p>
+        </div>
+        <a class="link team-link" href="#contacto">Ver disponibilidad</a>
+      </article>
+
+      <article class="team-row">
+        <div class="team-photo">
+          <img alt="Dra. Camila Riquelme" width="256" height="256" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8KUH2HD4dlJWKxTaZMuHXUgo9YHoLg9KXHWaiBRwdAJL1d8u2o8_V_I681iJmEascAu8iohJWGxnhCEPzsN-ES2EMuiDHIUJs8lXwoKxKB7OyCPsavYVY3nRLfyxv0qZOHNHCZBbx8iGXSm1eK05fhfbzViT2vETPAHebBBouxnISr8ZvAcdwFECUbXhubgjfRY-UvQYowMxh74lQJZJQSqQhgz7zufu143QDjnuScdHHNokivvYWpnE4zsVYg-YnAFe5NetEUOk">
+        </div>
+        <div class="team-id">
+          <h3>Dra. Camila Riquelme</h3>
+          <p class="specialty">Cuidados intensivos cardiopulmonares</p>
+          <p class="reg">Col. Vet. 6.104</p>
+        </div>
+        <div class="team-bio">
+          <p>Especializada en estabilizar el edema pulmonar cardiogénico agudo y en el manejo hemodinámico prequirúrgico.</p>
+          <p class="areas">UCI cardíaca, evaluación prequirúrgica</p>
+        </div>
+        <a class="link team-link" href="#contacto">Ver disponibilidad</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- Casos -->
+  <section class="sec" id="casos" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Casos clínicos</h2>
+        <p>Tratamientos personalizados y seguimiento cercano con cada familia.</p>
+      </div>
+      <div class="cases">
+        <figure class="case">
+          <img alt="Milo, un Golden Retriever mayor, descansando sobre la camilla de exploración" width="600" height="750" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyJzGaF0QqFx8_fE6hL1nswOeXEzRciTquqAlqnoZ6IWvdgCg-UJOLejiQTJ_Uk5igBoP8zA4mHbr83I8Zsz3NPllBAvBE_bb657y8ZuLSOfbsef4-jrvR1o0bqO0fSVAYOOt6aUfwiEvg9gnT5tJ5KUj1jFJgxzDuKPKvxpfIJmHG374gftBNyZIPXAAHkb59OUk1HBtyTtvcZjAXrMy3hmZquhv1SjCfzKVdHngC-HNk7rDnSSDpq_ne26K-4funHxfhA4pXdYQ" loading="lazy">
+          <figcaption>
+            <h3>Milo <span>9 años</span></h3>
+            <p class="dx">Golden Retriever. MAVM, estadio B2</p>
+            <p class="case-text">Monitoreo ecocardiográfico seriado de la degeneración mixomatosa mitral, con dosis de pimobendán ajustada.</p>
+            <p class="case-status"><i class="dot"></i>Control estable</p>
+          </figcaption>
+        </figure>
+        <figure class="case">
+          <img alt="Luna, una gata siamesa de ojos azules, durante un control veterinario" width="600" height="750" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCey9PEtiBwhFSVnrioLSRVBHwxLtkz0LtdjAPTzmpEgImxRMpbXoMKLzPdbTJV3S5RPeaaSTjGTFiq8uVpl6NJ2OM5j66WY5QjJWpQObSPlo6RFxbmC8euri2pG82p_dwJcIy30lO9l2PyEEM92bVoMLucgdDeFv6rtgGX_qwbL1n3xrCx3FLGLIP9z2l59jv8NSTYqOzgL5rbPHgcfPyPXAizL4EQXzzjKje_6vLwLT4vbA-bHehHjuiZZOhCo_wZQY45To4boiY" loading="lazy">
+          <figcaption>
+            <h3>Luna <span>5 años</span></h3>
+            <p class="dx">Siamés. Cardiomiopatía hipertrófica felina</p>
+            <p class="case-text">Detectada de forma precoz a partir de un soplo asintomático, con Doppler tisular. Previene tromboembolismos futuros.</p>
+            <p class="case-status"><i class="dot dot-blue"></i>Detección precoz</p>
+          </figcaption>
+        </figure>
+        <figure class="case">
+          <img alt="Simba, un Bulldog francés, relajado después de una ecografía" width="600" height="750" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8-ul8IgK6735Fpr-7wJDEocVmhfCu0GXOTnCWU1NGRB9Vk2wnqMkt0GCopu0JZBnAP13ZdRXwT1PQc4b4C4vi1pGsyqppDGyzFVHJODbHeYA158X2wmTk-qq2p2J_VOkExAc71AX8gX-kUBDb2F_EWEZAdhwA84Zq77NvBjTTvBhVjxhAbKpKmphW-71rEmbIgPLUGrmTuYEXvmxhqKOphiIMgze5TIvJzFOEjh45ULJUCA9yP2hVJXEWYwjxLRVfnnYPsHfCp9Q" loading="lazy">
+          <figcaption>
+            <h3>Simba <span>4 años</span></h3>
+            <p class="dx">Bulldog francés. Estenosis pulmonar</p>
+            <p class="case-text">Gradiente transvalvular medido con Doppler continuo y clasificado como leve. No requirió valvuloplastia.</p>
+            <p class="case-status"><i class="dot"></i>Manejo óptimo</p>
+          </figcaption>
+        </figure>
+        <figure class="case">
+          <img alt="Kira, una perra mestiza, recibiendo un examen cardíaco" width="600" height="750" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs5r8NkJdxAMjeRyfdfDn9MYEQCOUmLT_mCa00a30qgFNwnsaZC9AlyTgAUCF6kV-5TxipjhZxIcaM0yjK_TCIRzK8uTMsvcs5iA6hugMiijcs-LKUVhSz8BiHcaZiq-jJCuKv7RnT8aAoSZcwpzDzSUV4lzOXjgLqxU-HUlpSXE-BB6b-m54SSoD226L5P4m4MoT8E0-S1D-7DUSYj7kpevs1RRMeumH6HqY-rgrTFlC_ngdhNHz9gNSF4VAUuJfeCFmLnKPh-gw" loading="lazy">
+          <figcaption>
+            <h3>Kira <span>11 años</span></h3>
+            <p class="dx">Mestiza. Insuficiencia cardíaca congestiva</p>
+            <p class="case-text">Optimización farmacológica cuádruple, con remisión completa de la ascitis.</p>
+            <p class="case-status"><i class="dot"></i>Compensada</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section class="sec sec-contact" id="contacto">
+    <div class="wrap contact-grid">
+      <div class="contact-info">
+        <h2>Solicita una interconsulta</h2>
+        <p>Agenda una visita de ecocardiografía o una consulta de urgencia para tu clínica en menos de dos minutos.</p>
+        <ul class="contact-list">
+          <li>
+            <small>WhatsApp para interconsultas</small>
+            <a class="value" href="https://wa.me/+56942130189" rel="noopener noreferrer" target="_blank">+34 600 123 456</a>
+            <small>Atención prioritaria a clínicos</small>
+          </li>
+          <li>
+            <small>Correo clínico</small>
+            <a class="value" href="mailto:interconsultas@cardiovetmovil.com">interconsultas@cardiovetmovil.com</a>
+            <small>Para enviar historiales y radiografías</small>
+          </li>
+        </ul>
+      </div>
+
+      <div class="form-panel" id="derivar">
+        <form id="referral">
+          <h3>Derivar paciente</h3>
+          <div class="row">
+            <div class="field">
+              <label for="clinica">Clínica</label>
+              <input id="clinica" name="clinica" type="text" placeholder="Clínica" required>
+            </div>
+            <div class="field">
+              <label for="telefono">Teléfono</label>
+              <input id="telefono" name="telefono" type="tel" placeholder="+34 600 000 000" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="paciente">Paciente</label>
+              <input id="paciente" name="paciente" type="text" placeholder="Nombre" required>
+            </div>
+            <div class="field">
+              <label for="motivo">Motivo</label>
+              <select id="motivo" name="motivo" required>
+                <option value="" disabled selected>Selecciona</option>
+                <option value="ecocardiograma">Ecocardiograma</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Enviar</button>
+        </form>
+
+        <div class="sent" id="sent" role="status" tabindex="-1" hidden>
+          <h3>Solicitud enviada</h3>
+          <p>El cardiólogo de guardia se pondrá en contacto contigo al teléfono que indicaste.</p>
+          <button class="btn btn-ghost" type="button" id="again">Enviar otra solicitud</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="#inicio">
+          <svg viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M1 12h8l3-3 3 11 4-18 3 10h11"/></svg>
+          CardioVet <span>Móvil</span>
+        </a>
+        <p>Sociedad de Cardiología Veterinaria e Interconsultas Clínicas. Acreditación en ecocardiografía y diagnóstico hemodinámico veterinario.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#inicio">Aviso médico</a></li>
+        <li><a href="#derivar">Protocolo de derivación</a></li>
+        <li><a href="#contacto">Urgencias cardíacas</a></li>
+        <li><a href="#inicio">Términos y privacidad</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> CardioVet Móvil. Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="btn btn-ghost" href="tel:+34600123456">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+    Guardia
+  </a>
+  <a class="btn btn-primary" href="#contacto">Solicitar interconsulta</a>
+</div>
+
+<script>
+(function () {
+  // Año del pie
+  var y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  // Trazo de ECG: se construye según el ancho disponible para que el latido mantenga siempre la misma proporción
+  var svg = document.getElementById('ecg');
+  if (svg) {
+    var path = svg.querySelector('path');
+    var beat = 'h40q10,-16 20,0h18l6,8 10,-58 10,72 8,-22h24q16,-22 32,0h32';
+    var build = function () {
+      var w = svg.clientWidth || 1200;
+      var vbw = w / (72 / 100);
+      var n = Math.ceil(vbw / 200) + 1;
+      svg.setAttribute('viewBox', '0 0 ' + vbw.toFixed(1) + ' 100');
+      path.setAttribute('d', 'M0,60' + new Array(n + 1).join(beat));
+    };
+    build();
+    var t;
+    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(build, 150); });
+  }
+
+  // Aviso de urgencia
+  var hint = document.getElementById('urgency-hint');
+  var radios = document.querySelectorAll('input[name="prioridad"]');
+  radios.forEach(function (r) {
+    r.addEventListener('change', function () {
+      hint.hidden = document.querySelector('input[name="prioridad"]:checked').value !== 'urgencia';
+    });
+  });
+
+  // Envío del formulario (demostración: aún no está conectado a un servidor)
+  var form = document.getElementById('referral');
+  if (form) form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    var clinica = (document.getElementById('clinica')||{}).value || '';
+    var telefono = (document.getElementById('telefono')||{}).value || '';
+    var paciente = (document.getElementById('paciente')||{}).value || '';
+    var motivo = (document.getElementById('motivo')||{}).value || '';
+    var msg = 'Derivacion: Clinica: ' + clinica + ', Tel: ' + telefono + ', Paciente: ' + paciente + ', Motivo: ' + motivo;
+    var url = 'https://wa.me/34600123456?text=' + encodeURIComponent(msg);
+    window.open(url, '_blank');
+  });
+})();
+</script>
+</body>
+</html>
