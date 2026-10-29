@@ -119,12 +119,18 @@ h1, h2, h3, p, ul, figure { margin: 0; }
 .hero-media img { width: 100%; height: auto; object-fit: contain; border-radius: 4px; background: #DFE5E7; margin: 0 auto; }
 
 
+@media (max-width: 899px) {
+  .hero { display: flex; flex-direction: column; }
+  .ecg { order: -1; margin-top: 0; margin-bottom: 24px; }
+}
+
 @media (min-width: 900px) {
   .hero-grid { grid-template-columns: repeat(12, 1fr); gap: 0 24px; align-items: end; }
   .hero-copy { grid-column: 1 / 8; }
   .hero-media { grid-column: 8 / 13; text-align: center; display: flex; justify-content: center; }
   .hero-media img { height: auto; object-fit: contain; margin: 0 auto; }
 }
+
 
 /* Trazo de ECG: el único movimiento de la página */
 .ecg { margin-top: clamp(40px, 6vw, 72px); color: var(--red); }
@@ -300,13 +306,14 @@ legend { padding: 0; margin-bottom: 8px; }
 
 /* ---------- Barra inferior móvil ---------- */
 .dock {
-  position: fixed; inset: auto 0 0 0; z-index: 50; display: flex; gap: 10px;
+  position: fixed; inset: auto 0 0 0; z-index: 50; display: flex; gap: 10px; opacity: 0; transform: translateY(100%); pointer-events: none; transition: opacity .3s ease, transform .3s ease;
   padding: 10px var(--pad) calc(10px + env(safe-area-inset-bottom));
   background: rgba(244, 246, 246, .96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   border-top: 1px solid var(--line);
 }
 .dock .btn { padding: 0 16px; font-size: .875rem; }
 .dock .btn-primary { flex: 1; }
+.dock.dock--visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
 @media (min-width: 768px) { .dock { display: none; } }
 </style>
 </head>
@@ -334,17 +341,14 @@ legend { padding: 0; margin-bottom: 8px; }
 <main id="inicio">
 
   <!-- Hero -->
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <h1>Cardiología veterinaria especializada, directo en tu clínica</h1>
         <p class="lead">Ecocardiografía Doppler, electrocardiografía e interconsultas diagnósticas en tu centro, con rigor científico y trato cercano para cada paciente.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#contacto">Solicitar interconsulta</a>
-          <a class="btn btn-ghost" href="tel:+34600123456">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
-            Llamar a guardia
-          </a>
+
         </div>
         <p class="hero-note">Interconsultas colegiadas y avaladas para clínicas veterinarias de toda la región.</p>
       </div>
@@ -433,10 +437,10 @@ legend { padding: 0; margin-bottom: 8px; }
 
       <article class="team-row">
         <div class="team-photo">
-          <img alt="Dra. Valentina Morales" width="256" height="256" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsttU118kM9dN6-9BWNO5g_e8D-viKShdRpscQfSRMteZXpVq91iQEPeWJMFOrTHq34A03qVdlIRAL26zYnfDeHnLGYTTWwAxPtVJxwfGQivCi3_GFjhJdxGms5ctyzyGFu1GIyufIzzAD4zh10Kg0K13Iu_LqRulNVodo2b3ffHiwrT_85WwW0v_c7mYFtyfeD6zVyII7jlkZ7-dEjBlyTgny7wlgOgKwDq4a1yqWDfKqeHQru3fE745VvfPvAZvnlf1ZlSlJH7g">
+          <img alt="Dra. Jane Doe" width="256" height="256" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsttU118kM9dN6-9BWNO5g_e8D-viKShdRpscQfSRMteZXpVq91iQEPeWJMFOrTHq34A03qVdlIRAL26zYnfDeHnLGYTTWwAxPtVJxwfGQivCi3_GFjhJdxGms5ctyzyGFu1GIyufIzzAD4zh10Kg0K13Iu_LqRulNVodo2b3ffHiwrT_85WwW0v_c7mYFtyfeD6zVyII7jlkZ7-dEjBlyTgny7wlgOgKwDq4a1yqWDfKqeHQru3fE745VvfPvAZvnlf1ZlSlJH7g">
         </div>
         <div class="team-id">
-          <h3>Dra. Valentina Morales</h3>
+          <h3>Dra. Jane Doe</h3>
           <p class="specialty">Ecocardiografía Doppler y cardiopatías congénitas</p>
           <p class="reg">Col. Vet. 4.892</p>
         </div>
@@ -449,10 +453,10 @@ legend { padding: 0; margin-bottom: 8px; }
 
       <article class="team-row">
         <div class="team-photo">
-          <img alt="Dr. Martín Saavedra" width="256" height="256" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0CuxQuF9ucj6_6ASrGx1V0zWrJkt64Z_Q5r1UKtYq3dCZB1Vz_knfWs7C-moc3Rh9QtVaCRqUuPDt5ASYpm4E4WKTC6RO0ah4d18V4yByI85FTzE3qIAdKtYfEsRTZdmo-20IglNloXuQmVTpTWQLQY0fMGTX4wi7sErPZWB3lZUpl0FXXoXbnv3WCtfssMp_1kry7cwT6RSyaSj7wV65y2p-lvPx2y4Lf5qjvYq2sN4IVGLbA0yku98bMXZa4bVj0ZlQbGmdDOg">
+          <img alt="Dr. John Doe" width="256" height="256" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0CuxQuF9ucj6_6ASrGx1V0zWrJkt64Z_Q5r1UKtYq3dCZB1Vz_knfWs7C-moc3Rh9QtVaCRqUuPDt5ASYpm4E4WKTC6RO0ah4d18V4yByI85FTzE3qIAdKtYfEsRTZdmo-20IglNloXuQmVTpTWQLQY0fMGTX4wi7sErPZWB3lZUpl0FXXoXbnv3WCtfssMp_1kry7cwT6RSyaSj7wV65y2p-lvPx2y4Lf5qjvYq2sN4IVGLbA0yku98bMXZa4bVj0ZlQbGmdDOg">
         </div>
         <div class="team-id">
-          <h3>Dr. Martín Saavedra</h3>
+          <h3>Dr. John Doe</h3>
           <p class="specialty">Arritmias e hipertensión pulmonar</p>
           <p class="reg">Col. Vet. 5.210</p>
         </div>
@@ -465,10 +469,10 @@ legend { padding: 0; margin-bottom: 8px; }
 
       <article class="team-row">
         <div class="team-photo">
-          <img alt="Dra. Camila Riquelme" width="256" height="256" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8KUH2HD4dlJWKxTaZMuHXUgo9YHoLg9KXHWaiBRwdAJL1d8u2o8_V_I681iJmEascAu8iohJWGxnhCEPzsN-ES2EMuiDHIUJs8lXwoKxKB7OyCPsavYVY3nRLfyxv0qZOHNHCZBbx8iGXSm1eK05fhfbzViT2vETPAHebBBouxnISr8ZvAcdwFECUbXhubgjfRY-UvQYowMxh74lQJZJQSqQhgz7zufu143QDjnuScdHHNokivvYWpnE4zsVYg-YnAFe5NetEUOk">
+          <img alt="Dra. Jane Doe" width="256" height="256" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8KUH2HD4dlJWKxTaZMuHXUgo9YHoLg9KXHWaiBRwdAJL1d8u2o8_V_I681iJmEascAu8iohJWGxnhCEPzsN-ES2EMuiDHIUJs8lXwoKxKB7OyCPsavYVY3nRLfyxv0qZOHNHCZBbx8iGXSm1eK05fhfbzViT2vETPAHebBBouxnISr8ZvAcdwFECUbXhubgjfRY-UvQYowMxh74lQJZJQSqQhgz7zufu143QDjnuScdHHNokivvYWpnE4zsVYg-YnAFe5NetEUOk">
         </div>
         <div class="team-id">
-          <h3>Dra. Camila Riquelme</h3>
+          <h3>Dra. Jane Doe</h3>
           <p class="specialty">Cuidados intensivos cardiopulmonares</p>
           <p class="reg">Col. Vet. 6.104</p>
         </div>
@@ -538,7 +542,7 @@ legend { padding: 0; margin-bottom: 8px; }
         <ul class="contact-list">
           <li>
             <small>WhatsApp para interconsultas</small>
-            <a class="value" href="https://wa.me/+56942130189" rel="noopener noreferrer" target="_blank">+34 600 123 456</a>
+            <a class="value" href="https://wa.me/+56942130189" rel="noopener noreferrer" target="_blank">+56911111111</a>
             <small>Atención prioritaria a clínicos</small>
           </li>
           <li>
@@ -559,7 +563,7 @@ legend { padding: 0; margin-bottom: 8px; }
             </div>
             <div class="field">
               <label for="telefono">Teléfono</label>
-              <input id="telefono" name="telefono" type="tel" placeholder="+34 600 000 000" required>
+              <input id="telefono" name="telefono" type="tel" placeholder="+56911111111" required>
             </div>
           </div>
           <div class="row">
@@ -613,10 +617,7 @@ legend { padding: 0; margin-bottom: 8px; }
 </footer>
 
 <div class="dock">
-  <a class="btn btn-ghost" href="tel:+34600123456">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
-    Guardia
-  </a>
+
   <a class="btn btn-primary" href="#contacto">Solicitar interconsulta</a>
 </div>
 
@@ -662,9 +663,18 @@ legend { padding: 0; margin-bottom: 8px; }
     var paciente = (document.getElementById('paciente')||{}).value || '';
     var motivo = (document.getElementById('motivo')||{}).value || '';
     var msg = 'Derivacion: Clinica: ' + clinica + ', Tel: ' + telefono + ', Paciente: ' + paciente + ', Motivo: ' + motivo;
-    var url = 'https://wa.me/34600123456?text=' + encodeURIComponent(msg);
+    var url = 'https://wa.me/56942130189?text=' + encodeURIComponent(msg);
     window.open(url, '_blank');
   });
+  var hero = document.getElementById('hero');
+  var dock = document.querySelector('.dock');
+  var toggleDock = function () {
+    if (!hero || !dock) return;
+    if (window.scrollY > hero.offsetHeight - 80) dock.classList.add('dock--visible');
+    else dock.classList.remove('dock--visible');
+  };
+  toggleDock();
+  window.addEventListener('scroll', toggleDock, { passive: true });
 })();
 </script>
 </body>
